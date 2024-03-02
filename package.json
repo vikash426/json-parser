@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "npx ts-node ./src/index.ts",
+    "start:prod": "npm run build && node build/index.js",
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
