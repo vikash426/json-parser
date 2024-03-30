@@ -1,5 +1,8 @@
-sayHi('TypeScript')
+import { Tokenizer } from "./tokenizer"
 
-function sayHi(name: string) {
-  console.log(`Hello ${name}!`)
-}
+const jsonString  = '{ "key" : "value", "number": 9, "booleanTrue": true, "booleanFalse": false}';
+
+
+const tokenizer = new Tokenizer(jsonString);
+
+console.log(tokenizer.tokenize());
