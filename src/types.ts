@@ -1,6 +1,8 @@
 export enum TokenType {
-    OPEN_BRACE = 'OPEN_BRACE',
-    CLOSE_BRACE = 'CLOSE_BRACE',
+    OPEN_OBJECT = 'OPEN_OBJECT',
+    CLOSE_OBJECT = 'CLOSE_OBJECT',
+    OPEN_ARRAY = 'OPEN_ARRAY',
+    CLOSE_ARRAY = 'CLOSE_ARRAY',
     QUOTES = 'QUOTES',
     STRING = 'STRING', 
     COLON = 'COLON',
@@ -13,5 +15,11 @@ export enum TokenType {
 
 export interface Token {
     type: TokenType,
-    value: String,
+    value: string,
 }
+
+export type JsonValue = string | boolean | number | null | JsonArray | JsonObject
+
+export type JsonObject = {[key: string]: JsonValue}
+
+export type JsonArray = JsonValue[]

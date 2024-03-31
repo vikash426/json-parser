@@ -1,8 +1,11 @@
+import { JsonParser } from "./parser";
 import { Tokenizer } from "./tokenizer"
 
-const jsonString  = '{ "key" : "value", "number": 9, "booleanTrue": true, "booleanFalse": false}';
+const jsonString  = '{ "key" : "value", "number": 90}';
 
 
 const tokenizer = new Tokenizer(jsonString);
+const parser = new JsonParser(tokenizer.tokenize())
 
-console.log(tokenizer.tokenize());
+
+console.log(parser.parse());

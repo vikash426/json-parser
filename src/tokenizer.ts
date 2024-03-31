@@ -21,13 +21,13 @@ export class Tokenizer {
       }
 
       if (currentChar === "{") {
-        tokens.push({ type: TokenType.OPEN_BRACE, value: currentChar });
+        tokens.push({ type: TokenType.OPEN_OBJECT, value: currentChar });
         this.pos++;
         continue;
       }
 
       if (currentChar === "}") {
-        tokens.push({ type: TokenType.CLOSE_BRACE, value: currentChar });
+        tokens.push({ type: TokenType.CLOSE_OBJECT, value: currentChar });
         this.pos++;
         continue;
       }
@@ -68,7 +68,25 @@ export class Tokenizer {
         continue;
       }
 
-      throw new Error(`unexpected string ${currentChar} at pos ` + this.pos);
+      if(currentChar === 'n'){
+        const str = this.consumeValue("null");
+        tokens.push({ type: TokenType.NULL, value: str });
+        continue;
+      }
+
+      if(currentChar === '['){
+        tokens.push({ type: TokenType.OPEN_ARRAY, value: currentChar });
+        this.pos++;
+        continue;
+      }
+
+      if(currentChar === ']'){
+        tokens.push({ type: TokenType.CLOSE_ARRAY, value: currentChar });
+        this.pos++;
+        continue;
+      }
+
+      throw new Error(`unexpected character ${currentChar} at pos ` + this.pos);
     }
 
     return tokens;
@@ -92,7 +110,6 @@ export class Tokenizer {
       value = value + currentChar;
       currentChar = currentChar[++this.pos];
     }
-    this.pos++;
     return value;
   };
 
