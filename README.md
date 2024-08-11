@@ -5,7 +5,7 @@ Building another Json Parser insprired by John Crickett's Coding Challenge: [Bui
 ## Approach
 Check out the [Json Documentation](https://www.json.org/json-en.html) to understand grammer and supported types.
 
-### Steps
+### Implmentation
 - Lexical Tokenization - return meaningful tokens from text
 - Parsing - analyse the list of tokens to match it to json grammar, if it validates convert it into a typescript object
  

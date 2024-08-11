@@ -1,131 +1,123 @@
 import { Token, TokenType } from "./types";
 import { isDigit, isWordChar } from "./utils";
 
-export class Tokenizer {
-  private pos = 0;
-  private jsonString: string;
 
-  constructor(jsonString: string) {
-    this.jsonString = jsonString;
-  }
+export const tokenize = (jsonString: string): Token[] => {
+  let pos = 0;
+  const tokens: Token[] = [];
 
-  public tokenize(): Token[] {
-    const tokens: Token[] = [];
+  function consumeValue(value: string): string {
+    let returnValue = "";
+    let currentChar = jsonString[pos++];
 
-    while (this.pos < this.jsonString.length) {
-      const currentChar = this.jsonString.charAt(this.pos);
-
-      if (currentChar === " ") {
-        this.pos++;
-        continue;
+    for (const ch of value) {
+      if (currentChar !== ch) {
+        return returnValue;
       }
-
-      if (currentChar === "{") {
-        tokens.push({ type: TokenType.OPEN_OBJECT, value: currentChar });
-        this.pos++;
-        continue;
-      }
-
-      if (currentChar === "}") {
-        tokens.push({ type: TokenType.CLOSE_OBJECT, value: currentChar });
-        this.pos++;
-        continue;
-      }
-
-      if (currentChar === ":") {
-        tokens.push({ type: TokenType.COLON, value: currentChar });
-        this.pos++;
-        continue;
-      }
-
-      if (currentChar === '"') {
-        const str = this.consumeString();
-        tokens.push({ type: TokenType.STRING, value: str });
-        continue;
-      }
-
-      if (currentChar === ",") {
-        tokens.push({ type: TokenType.COMMA, value: currentChar });
-        this.pos++;
-        continue;
-      }
-
-      if (isDigit(currentChar)) {
-        const numb = this.consumeNumber();
-        tokens.push({ type: TokenType.NUMBER, value: numb });
-        continue;
-      }
-
-      if (currentChar === "t") {
-        const str = this.consumeValue("true");
-        tokens.push({ type: TokenType.TRUE, value: str });
-        continue;
-      }
-
-      if (currentChar === "f") {
-        const str = this.consumeValue("false");
-        tokens.push({ type: TokenType.FALSE, value: str });
-        continue;
-      }
-
-      if(currentChar === 'n'){
-        const str = this.consumeValue("null");
-        tokens.push({ type: TokenType.NULL, value: str });
-        continue;
-      }
-
-      if(currentChar === '['){
-        tokens.push({ type: TokenType.OPEN_ARRAY, value: currentChar });
-        this.pos++;
-        continue;
-      }
-
-      if(currentChar === ']'){
-        tokens.push({ type: TokenType.CLOSE_ARRAY, value: currentChar });
-        this.pos++;
-        continue;
-      }
-
-      throw new Error(`unexpected character ${currentChar} at pos ` + this.pos);
+      returnValue = returnValue + currentChar;
+      currentChar = jsonString[pos++];
     }
 
-    return tokens;
+    return returnValue;
   }
 
-  private consumeString(): string {
+  function consumeString(): string {
     let value = "";
-    let currentChar = this.jsonString[++this.pos];
+    let currentChar = jsonString[++pos];
     while (currentChar != '"' && currentChar != null) {
       value = value + currentChar;
-      currentChar = this.jsonString[++this.pos];
+      currentChar = jsonString[++pos];
     }
-    this.pos++;
+    pos++;
     return value;
   }
 
-  private consumeNumber = (): string => {
-    let value = this.jsonString[this.pos];
-    let currentChar = this.jsonString[++this.pos];
+  function consumeNumber(): string {
+    let value = jsonString[pos];
+    let currentChar = jsonString[++pos];
     while (isDigit(currentChar)) {
       value = value + currentChar;
-      currentChar = currentChar[++this.pos];
+      currentChar = currentChar[++pos];
     }
     return value;
   };
 
-  private consumeValue = (value: string): string => {
-    let returnValue = "";
-    let currentChar = this.jsonString[this.pos++];
-    
-    for(const ch of value){
-        console.log("currentChar: ", currentChar, " ch:", ch);
-        if(currentChar !== ch){
-            return returnValue;
-        }
-        returnValue = returnValue + currentChar
-        currentChar = this.jsonString[this.pos++];
+  while (pos < jsonString.length) {
+    const currentChar = jsonString.charAt(pos);
+
+    if (currentChar === " ") {
+      pos++;
+      continue;
     }
 
-    return returnValue
-  };
+    if (currentChar === "{") {
+      tokens.push({ type: TokenType.OPEN_OBJECT, value: currentChar });
+      pos++;
+      continue;
+    }
+
+    if (currentChar === "}") {
+      tokens.push({ type: TokenType.CLOSE_OBJECT, value: currentChar });
+      pos++;
+      continue;
+    }
+
+    if (currentChar === ":") {
+      tokens.push({ type: TokenType.COLON, value: currentChar });
+      pos++;
+      continue;
+    }
+
+    if (currentChar === '"') {
+      const str = consumeString();
+      tokens.push({ type: TokenType.STRING, value: str });
+      continue;
+    }
+
+    if (currentChar === ",") {
+      tokens.push({ type: TokenType.COMMA, value: currentChar });
+      pos++;
+      continue;
+    }
+
+    if (isDigit(currentChar)) {
+      const numb = consumeNumber();
+      tokens.push({ type: TokenType.NUMBER, value: numb });
+      continue;
+    }
+
+    if (currentChar === "t") {
+      const str = consumeValue("true");
+      tokens.push({ type: TokenType.TRUE, value: str });
+      continue;
+    }
+
+    if (currentChar === "f") {
+      const str = consumeValue("false");
+      tokens.push({ type: TokenType.FALSE, value: str });
+      continue;
+    }
+
+    if (currentChar === "n") {
+      const str = consumeValue("null");
+      tokens.push({ type: TokenType.NULL, value: str });
+      continue;
+    }
+
+    if (currentChar === "[") {
+      tokens.push({ type: TokenType.OPEN_ARRAY, value: currentChar });
+      pos++;
+      continue;
+    }
+
+    if (currentChar === "]") {
+      tokens.push({ type: TokenType.CLOSE_ARRAY, value: currentChar });
+      pos++;
+      continue;
+    }
+
+    throw new Error(`unexpected character ${currentChar} at pos ` + pos);
+  }
+
+  return tokens;
 }
