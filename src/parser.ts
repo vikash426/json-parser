@@ -1,8 +1,10 @@
+import { tokenize } from "./tokenizer";
 import { JsonObject, JsonValue, Token, TokenType } from "./types";
 
 
-export const parse = (tokens: Token[]): JsonObject => {
+export const jsonParse = (jsonString: string): JsonObject => {
     let pos = 0;
+    const tokens = tokenize(jsonString)
 
     function currentToken(): Token{
         return tokens[pos];

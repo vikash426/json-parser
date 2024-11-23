@@ -1,12 +1,11 @@
-import { parse } from "./parser";
+import { jsonParse } from "./parser";
 import { tokenize } from "./tokenizer";
 
 const jsonString  = '{ "key" : "value", "number": 90}';
 
 
 
-const tokens = tokenize(jsonString);
-const ob = parse(tokens)
+const ob = jsonParse(jsonString)
 
 
 console.log(ob);

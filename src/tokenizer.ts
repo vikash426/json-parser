@@ -45,7 +45,7 @@ export const tokenize = (jsonString: string): Token[] => {
   while (pos < jsonString.length) {
     const currentChar = jsonString.charAt(pos);
 
-    if (currentChar === " ") {
+    if (currentChar === " " || currentChar === "\n") {
       pos++;
       continue;
     }
