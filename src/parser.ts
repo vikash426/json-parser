@@ -1,5 +1,5 @@
 import { tokenize } from "./tokenizer";
-import { JsonObject, JsonValue, Token, TokenType } from "./types";
+import { JsonArray, JsonObject, JsonValue, Token, TokenType } from "./types";
 
 
 export const jsonParse = (jsonString: string): JsonObject => {
@@ -31,6 +31,8 @@ export const jsonParse = (jsonString: string): JsonObject => {
                 return false
             case TokenType.OPEN_OBJECT:
                 return parseObject()
+            case TokenType.OPEN_ARRAY:
+                return parseArray()
             default:
                 throw new Error(`Unexpected Token ${token.value}`)
         }
@@ -58,6 +60,21 @@ export const jsonParse = (jsonString: string): JsonObject => {
         return jsonObject
     }
 
+    function parseArray(): JsonArray {
+      const jsonArray: JsonArray = [];
+      assertToken(currentToken().type, TokenType.OPEN_ARRAY)
+      let token = nextToken() //Consume [
+      while(token.type !== TokenType.CLOSE_ARRAY){
+        jsonArray.push(parseValue())
+        token = nextToken();  // COnsume Value
+        if(token.type === TokenType.COMMA){
+            token = nextToken();  // Consume ,
+        }   
+      }
+
+      return jsonArray;
+    }
+
     function assertToken(currentTokenType: TokenType,tokenType: TokenType){
         if(currentTokenType !== tokenType){
             throw new Error(`expected token ${tokenType} but got ${currentTokenType}`)
@@ -65,6 +82,8 @@ export const jsonParse = (jsonString: string): JsonObject => {
     }
 
 
+    if(currentToken().type === TokenType.OPEN_ARRAY)
+        return parseArray()
 
     return parseObject()
 }
