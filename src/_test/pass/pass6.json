@@ -1,0 +1,13 @@
+{
+    "JSON test pattern array of objects": {
+        "The outermost value": "must be an object or array.",
+        "In this test": [
+            {
+                "key": "value"
+            },
+            {
+                "key2": "value2"
+            }
+        ]
+    }
+}

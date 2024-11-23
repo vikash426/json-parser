@@ -1,0 +1,6 @@
+{
+    "JSON test pattern array of strings": {
+        "The outermost value": "must be an object or array.",
+        "In this test": ["It", "is", "an", "Array"]
+    }
+}
