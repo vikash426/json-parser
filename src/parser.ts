@@ -29,6 +29,8 @@ export const jsonParse = (jsonString: string): JsonObject => {
                 return true
             case TokenType.FALSE:
                 return false
+            case TokenType.OPEN_OBJECT:
+                return parseObject()
             default:
                 throw new Error(`Unexpected Token ${token.value}`)
         }
