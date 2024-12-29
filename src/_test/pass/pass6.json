@@ -1,5 +1,5 @@
 {
-    "JSON test pattern array of objects": {
+    "array of objects": {
         "The outermost value": "must be an object or array.",
         "In this test": [
             {

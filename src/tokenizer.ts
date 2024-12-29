@@ -37,7 +37,7 @@ export const tokenize = (jsonString: string): Token[] => {
     let currentChar = jsonString[++pos];
     while (isDigit(currentChar)) {
       value = value + currentChar;
-      currentChar = currentChar[++pos];
+      currentChar = jsonString[++pos];
     }
     return value;
   };
@@ -80,7 +80,7 @@ export const tokenize = (jsonString: string): Token[] => {
       continue;
     }
 
-    if (isDigit(currentChar)) {
+    if (isDigit(currentChar) || "-") {
       const numb = consumeNumber();
       tokens.push({ type: TokenType.NUMBER, value: numb });
       continue;

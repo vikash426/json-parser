@@ -20,6 +20,6 @@ export interface Token {
 
 export type JsonValue = string | boolean | number | null | JsonArray | JsonObject
 
-export type JsonObject = {[key: string]: JsonValue} | JsonArray
+export type JsonObject = any
 
 export type JsonArray = JsonValue[]
