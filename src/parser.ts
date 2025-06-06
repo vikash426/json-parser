@@ -22,7 +22,7 @@ export const jsonParse = (jsonString: string): JsonObject => {
             case TokenType.STRING:
                 return token.value
             case TokenType.NUMBER:
-                return Number.parseInt(token.value)
+                return Number.parseFloat(token.value)
             case TokenType.NULL:
                 return null
             case TokenType.TRUE:

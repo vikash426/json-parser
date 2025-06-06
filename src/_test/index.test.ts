@@ -62,4 +62,15 @@ describe('should pass', () => {
         expect(json["false"]).toBe(false)
     })
 
+    it('should parse all types of numbers', () => {
+        const jsonString = fs.readFileSync(`${dir}pass9.json`, 'utf-8');
+        const json = jsonParse(jsonString)
+        
+        expect(json["positive"]).toBe(32)
+        expect(json["negative"]).toBe(-9)
+        expect(json["fraction"]).toBe(0.75)
+        expect(json["negativeFraction"]).toBe(-0.25)
+        expect(json["exponential"]).toBe(1e+10)
+    })
+
 })

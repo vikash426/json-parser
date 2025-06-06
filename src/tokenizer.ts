@@ -29,15 +29,53 @@ export const tokenize = (jsonString: string): Token[] => {
     return value;
   }
 
+
   function consumeNumber(): string {
-    let value = jsonString[pos];
-    let currentChar = jsonString[++pos];
-    while (isDigit(currentChar)) {
-      value = value + currentChar;
-      currentChar = jsonString[++pos];
+    const start = pos;
+
+    // Optional minus
+    if (jsonString[pos] === "-") {
+      pos++;
     }
-    return value;
-  };
+
+    // Integer part
+    if (jsonString[pos] === "0") {
+      pos++;
+    } else if (isDigit(jsonString[pos])) {
+      while (isDigit(jsonString[pos])) {
+        pos++;
+      }
+    } else {
+      throw new Error(`Invalid number at pos ${start}`);
+    }
+
+    // Fraction
+    if (jsonString[pos] === ".") {
+      pos++;
+      if (!isDigit(jsonString[pos])) {
+        throw new Error(`Invalid fractional number at pos ${pos}`);
+      }
+      while (isDigit(jsonString[pos])) {
+        pos++;
+      }
+    }
+
+    // Exponent
+    if (jsonString[pos] === "e" || jsonString[pos] === "E") {
+      pos++;
+      if (jsonString[pos] === "+" || jsonString[pos] === "-") {
+        pos++;
+      }
+      if (!isDigit(jsonString[pos])) {
+        throw new Error(`Invalid exponent at pos ${pos}`);
+      }
+      while (isDigit(jsonString[pos])) {
+        pos++;
+      }
+    }
+    return jsonString.slice(start, pos)
+  }
+
 
   while (pos < jsonString.length) {
     const currentChar = jsonString.charAt(pos);
