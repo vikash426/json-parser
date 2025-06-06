@@ -28,17 +28,18 @@ NULL = 'NULL'
 ```
 
 ## TODO
-- [x] Tokenizer
-- [x] Empty json object parsing
-- [x] parse string key and value pair
 - Extend parser for following types
-    - [x] Numbers
+    - Numbers
+        - [x] Positve Integers
+        - [ ] Negative Integers
+        - [ ] Fractional
+        - [ ] Exponential
     - [x] Boolean
-    - Null
-    - Json Array
-    - Nested Json Object
-- Deserilization to a typescript object
-- Write Unit Test
+    - [x] Null
+    - [x] Json Array
+    - [ ] Nested Json Object
+    - [ ] Escape Sequence in String (\" (escaped quote), \\ (backslash), \uXXXX (Unicode))
+    - [ ] Whitesapce - Space, Tab (\t, U+0009), Line Feed (\n, U+000A), Carriage Return (\r, U+000D)
 
 
 

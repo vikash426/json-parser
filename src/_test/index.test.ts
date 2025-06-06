@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
 import { jsonParse } from '../parser';
-import { JsonObject } from '../types';
 
 
 describe('should pass', () => {
@@ -53,6 +52,14 @@ describe('should pass', () => {
         const json = jsonParse(jsonString)
         expect(json["integer"]).toBe(1234567890)
         expect(json["neg-integer"]).toBe(-42)
+    })
+
+    it('should parse boolean', () => {
+        const jsonString = fs.readFileSync(`${dir}pass8.json`, 'utf-8');
+        const json = jsonParse(jsonString)
+        
+        expect(json["true"]).toBe(true)
+        expect(json["false"]).toBe(false)
     })
 
 })
